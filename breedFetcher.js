@@ -1,9 +1,14 @@
 const request = require("request");
-const fs = require("fs");
-const url = "https://www.google.com/";
+const url = "https://api.thecatapi.com/v1/images/search?q=Siberian";
+
 
 request(url, (error, response, body)=>{
-  console.log("error: ", error);
+  const data = JSON.parse(body);
+  if(error){
+    console.log("error: ", error);
+  }
+
   console.log("response: ", response, "status code: ", response.statusCode);
+  // console.log("data: ", data[0], "type of data: ", typeof data);
   console.log("body: ", body);
-})
+});
