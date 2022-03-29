@@ -15,4 +15,5 @@ request(url, (error, response, body)=>{
   const data = JSON.parse(body);
   console.log("data: ", data);
   console.log("type of data: ",typeof data);
+  console.log("print the first entry in data: ", data[0]);
 });
