@@ -1,7 +1,7 @@
 const request = require('request');
 
 let userInput = process.argv.slice(2);
-let url = 'https://api.thecatapi.com/v1/breeds/search?q=Siberian';
+let url = 'https://api.thecatapi.com/v1/breeds/search?q=' + userInput[0];
 
 request((url), (error, response, body) => {
 
