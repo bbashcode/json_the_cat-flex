@@ -1,28 +1,27 @@
 const request = require('request');
 
-let userInput = process.argv.slice(2);
 
-// allow the user to specify the breed name using command-line arguments.
-let url = 'https://api.thecatapi.com/v1/breeds/search?q=' + userInput;
-
-request((url), (error, response, body) => {
-
-  // Handle request errors and print the error details to the screen.
-  if (error) {
-    console.log('Here is the error: ', error);
-  }
+let apiParam = 'https://api.thecatapi.com/v1/breeds/search?q=';
 
 
-  // use JSON.parse to convert the JSON string into an actual object.
-  const data = JSON.parse(body);
+const fetchBreedDescription = (breedName, callback) => {
 
-  // Edge Case: Breed Not Found
-  if (data.length === 0 || data[0] === 'undefined') {
-    console.log(`Sorry, the requested breed: '${userInput}' cannot be found!`);
-  } else { // access the first entry in the data array and print out the description for the user.
-    console.log(`Breed Description: `, data[0].description);
-    console.log(`Breed Details: `, data[0]);
+  let endPoint = apiParam + breedName;
 
-  }
+  request(endPoint, (error, response, body) => {
 
-});
+    const data = JSON.parse(body);
+
+    if (error) {
+      return callback(error, null);
+    } else {
+      if (data.length === 0 || data[0] === 'undefined') {
+        return callback(null, 'Sorry, the requested cat cannot be found!');
+      } else {
+        return callback(null, data[0].description);
+      }
+    }
+  });
+};
+//Export the function using module
+module.exports = {fetchBreedDescription};
