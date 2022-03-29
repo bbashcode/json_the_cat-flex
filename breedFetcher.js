@@ -1,24 +1,28 @@
 const request = require('request');
 
 let userInput = process.argv.slice(2);
-let url = 'https://api.thecatapi.com/v1/breeds/search?q=' + userInput[0];
+
+// allow the user to specify the breed name using command-line arguments.
+let url = 'https://api.thecatapi.com/v1/breeds/search?q=' + userInput;
 
 request((url), (error, response, body) => {
 
-    if (error) {
-        console.log(error);
-        console.log({
-            error
-        });
-    }
-    console.log(response);
-    console.log(body);
-    console.log(`body: `, body);
+	// Handle request errors and print the error details to the screen.  
+	if (error) {
+		console.log('Here is the error: ', error);
+	}
 
-    console.log(`type of body`, typeof body);
 
-    console.log('--------------------------------------');
-    const data = JSON.parse(body);
-    console.log(`data`, data[0].description);
-    console.log(`type of data`, typeof data);
+	// use JSON.parse to convert the JSON string into an actual object.
+	const data = JSON.parse(body);
+
+	// Edge Case: Breed Not Found
+	if (data.length === 0 || data[0] === 'undefined') {
+		console.log(`Sorry, the requested breed: '${userInput}' cannot be found!`);
+	} else { // access the first entry in the data array and print out the description for the user.
+		console.log(`Breed Description: `, data[0].description);
+		console.log(`Breed Details: `, data[0]);
+
+	}
+
 });
